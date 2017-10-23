@@ -1,0 +1,16 @@
+{
+  "name": "user",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/vqthanh1412489/user.git",
+  "author": "vqthanh1412489 <vqthanh1412489@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.16.2",
+    "mocha": "^4.0.1",
+    "mongoose": "^4.12.4"
+  },
+  "scripts": {
+    "test": "nodemon --exec mocha --recursive"
+  }
+}
