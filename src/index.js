@@ -14,8 +14,9 @@ app.get('/signup', (req, res) => {
 });
 
 app.post('/signup', parser, (req, res) => {
-    const user = new User(req.body);
-    user.save()
+    const { username, password, email } = req.body;
+    
+    User.signUp(username, password, email)
     .then(() => res.render('signupsuccess'))
     .catch(err => res.send('Sign Up Fail:' + err.message));
 });
