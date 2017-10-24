@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const { hash } = require('bcrypt');
+const { hash, compare } = require('bcrypt');
 const Schema = mongoose.Schema;
 const UserSchema = new Schema({
     username: {
@@ -29,6 +29,13 @@ User.signUp = function(username, password, email){
         const user = new User({username, password: encrypted, email});
         return user.save();
     });
+};
+
+User.signIn = async function(email, password) {
+    const user = await User.findOne({ email });
+    if (!user) throw new Error('Email khong ton tai.');
+    const same = await compare(password, user.password);
+    if (!same) throw new Error('Sai password.');
 };
 
 module.exports = User;
