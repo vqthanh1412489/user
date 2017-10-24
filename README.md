@@ -1,12 +1,14 @@
 # user
 `##1. Tạo mới user với các điều kiệm ràng buộc`
   - Username:
+ ```sh
   <ul>
     <li>Duy nhất</li>
     <li>Có ít nhất 10 kí tự</li>
     <li>Không được rỗng</li>
     <li>Kiểu: String</li>
   </ul>
+ ```
   - Pass:
     + Kiểu Sring
     + Có ít nhất 8 kí tự
