@@ -20,16 +20,18 @@ app.get('/signin', (req, res) => {
 app.post('/signup', parser, (req, res) => {
     const { username, password, email } = req.body;
     User.signUp(username, password, email)
-    .then(() => res.render('signupsuccess'))
-    .catch(err => res.send('Sign Up Fail:' + err.message));
+    .then(() => res.status(200).render('signupsuccess'))
+    .catch(err => res.status(401).send(err.message));
 });
 
 app.post('/signin', parser, async (req, res) => {
     const { email, password } = req.body;
     User.signIn(email, password)
     .then(() => res.status(200).render('loginsucces'))
-    .catch(err => res.status(401).send('Login Fail: ' + err.message));
+    .catch(err => res.status(401).send(err.message));
 });
 
 
 app.listen(3009, () => console.log('Server Started'));
+
+module.exports = app;

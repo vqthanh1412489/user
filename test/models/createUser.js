@@ -2,7 +2,7 @@ const User = require('../../src/user');
 const assert = require('assert');
 
 
-describe.only('createUser', () => {
+describe('createUser', () => {
     let idUser;
     it('Co the tao 1 user voi thong tin day du', async () => {
         const thanh = new User({
@@ -17,7 +17,7 @@ describe.only('createUser', () => {
         assert.equal(user.username, 'vqthanh1412489');
     });
 
-    it('    ', async () => {
+    it('Khong the tao User ma khong co Email', async () => {
         const thanh = new User({
             username: 'vqthanh1412489',
             password: '12345678910',
@@ -96,7 +96,7 @@ describe.only('createUser', () => {
         }
     });
 
-    it.only('Khong the tao 2 User co username giong nhau', async () => {
+    it('Khong the tao 2 User co username giong nhau', async () => {
         const thanh = new User({
             username: 'thanh12345678910',
             email: 'vqthanh1412489@gmail.com',

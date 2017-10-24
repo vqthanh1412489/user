@@ -23,15 +23,23 @@ const UserSchema = new Schema({
 
 const User = mongoose.model('user', UserSchema);
 
-User.signUp = function(username, password, email){
-    return hash(password, 8)
-    .then(encrypted => {
-        const user = new User({username, password: encrypted, email});
-        return user.save();
-    });
-};
+// User.signUp = function(username, password, email){
+//     return hash(password, 8)
+//     .then(encrypted => {
+//         const user = new User({username, password: encrypted, email});
+//         return user.save();
+//     });
+// };
 
-User.signIn = async function(email, password) {
+// Do kết quả trả ra của hàm async luôn là Promise nên ở ngoài ta có thể .then .catch
+User.signUp = async function (username, password, email) {
+    const encrypted = await hash(password, 8);
+    if (!encrypted || !email || !username) throw new Error('Thieu thong tin');
+    const user = new User({username, password: encrypted, email});
+    await user.save();
+}
+
+User.signIn = async function (email, password) {
     const user = await User.findOne({ email });
     if (!user) throw new Error('Email khong ton tai.');
     const same = await compare(password, user.password);
