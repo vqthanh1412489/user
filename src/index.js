@@ -13,30 +13,43 @@ app.use(session({
     secret: 'vuquocthanh',
     resave: false,
     saveUninitialized: true,
-    cookie: { maxAge: 15000 },
+    cookie: { maxAge: 1000000 },
     rolling: true
 }));
 
-app.get('/signup', (req, res) => {
+// Midle ware
+// Da dang nhap roi thi chuyen qua /user
+const SignedInForwordToUser = function(req, res, next){
     const { user } = req.session;
     if (user) return res.redirect('/user');
+    next();
+}
+
+// Chua dang nhap thi chuyen den /signin
+const NotSignIn = function(req, res, next){
+    const { user } = req.session;
+    if (!user) return res.redirect('/signin');
+    next();
+}
+
+app.get('/signup', SignedInForwordToUser, (req, res) => {
     res.render('signup');
 });
 
-app.get('/signin', (req, res) => {
-    const { user } = req.session;
-    if (user) return res.redirect('/user');
+app.get('/signin', SignedInForwordToUser, (req, res) => {
     res.render('signin');
 });
 
-app.post('/signup', parser, (req, res) => {
+app.post('/signup', parser, SignedInForwordToUser, (req, res) => {
+
     const { username, password, email } = req.body;
     User.signUp(username, password, email)
         .then(() => res.status(200).render('signupsuccess'))
         .catch(err => res.status(401).send(err.message));
 });
 
-app.post('/signin', parser, async (req, res) => {
+app.post('/signin', parser, SignedInForwordToUser, (req, res) => {
+
     const { email, password } = req.body;
     User.signIn(email, password)
         .then(user => {
@@ -46,9 +59,8 @@ app.post('/signin', parser, async (req, res) => {
         .catch(err => res.status(401).send(err.message));
 });
 
-app.get('/user', (req, res) => {
+app.get('/user', NotSignIn, (req, res) => {
     const { user } = req.session;
-    if (!user) return res.redirect('/signin');
     res.render('user', { user });
 });
 
